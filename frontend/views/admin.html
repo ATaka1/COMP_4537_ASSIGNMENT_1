@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Assignment 1</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel='stylesheet' href='/css/style.css' />
+</head>
+
+<body>
+    <nav class="jumbotron">
+        <h2>Admin Page</h2>
+    </nav>
+    <p id="warning"></p>
+    <section class="create-question">
+        <form id="form-edit-question">
+            <div class="form-group">
+                <label for="editableProblem">Enter a Question</label>
+                <textarea class="form-control" name="problem" id="editableProblem" cols="20" rows="5"></textarea>
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input class=""id="r1" type="radio" name="question" value="">
+                    </div>
+                </div>
+                <input class="form-control" id="r5" type="text" name="answer">
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input id="r2" type="radio" name="question" value="null">
+                    </div>
+                </div>
+                <input class="form-control" id="r6" type="text" name="answer">
+            </div>
+            
+            <div class="main-btn btn-group btn-group-lg" role="group">
+                <button class="btn btn-primary" onclick="addQuestion()">Add Question</button>
+                <button class="btn btn btn-secondary" onclick="deleteQuestion()">Delete</button>
+            </div>
+        </form>
+        <div class="main-btn btn-group btn-group-lg" role="group">
+            <button class="btn btn-primary" onclick="addField()">Add Field</button>
+            <button class="btn btn-primary" onclick="removeField()">Remove Field</button>
+        </div>
+    </section>
+
+    <section class="create-question">
+        <form id="quesContainer">
+        </form>
+    </section>
+    <a href="/COMP4537/Assignment/index.html" class="btn btn-primary">Return to Root</a>
+        <script src="/js/admin.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
+    </section>
+</body>
+</html>
