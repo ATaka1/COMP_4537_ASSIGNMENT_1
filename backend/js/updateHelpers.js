@@ -68,6 +68,10 @@ function updateAllAnswers(connection, res, formattedAnswers) {
           });
           res.end(`Query Failed`);
         }
+        res.writeHead(200, {
+            "Content-Type": "text/html",
+            "Access-Control-Allow-Origin": "*",
+      });
         res.end("success");
     });
 }

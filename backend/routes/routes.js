@@ -7,14 +7,17 @@ const updateHelper = require('../js/updateHelpers');
 
 router.get('/', function (req, res, next) {
     fs.readFile('../frontend/views/index.html', (err, content) => {
-        if (err) {
-            console.log(`${err}`);
-            res.writeHead(404);
-            res.end(err);
-        } else {
+        if(err) {
+            res.writeHead(400, {
+                "Content-Type": "text/html",
+                "Access-Control-Allow-Origin": "*",
+          });
+            res.end(`The error is ${err}`)
+          } else {
             console.log(path);
             res.writeHead(200, {
-                "Content-type": "text/html"
+                "Content-type": "text/html",
+                "Access-Control-Allow-Origin": "*",
             });
             res.end(content);
         }
@@ -23,14 +26,17 @@ router.get('/', function (req, res, next) {
 
 router.get('/COMP4537/assignment/admin.html', (req, res, next) => {
     fs.readFile('../frontend/views/admin.html', (err, content) => {
-        if (err) {
-            console.log(`${err}`);
-            res.writeHead(404);
-            res.end(err);
+        if(err) {
+          res.writeHead(400, {
+              "Content-Type": "text/html",
+              "Access-Control-Allow-Origin": "*",
+        });
+          res.end(`The error is ${err}`)
         } else {
             console.log(path);
             res.writeHead(200, {
-                "Content-type": "text/html"
+                "Content-type": "text/html",
+                "Access-Control-Allow-Origin": "*",
             });
             res.end(content);
         }
@@ -39,14 +45,17 @@ router.get('/COMP4537/assignment/admin.html', (req, res, next) => {
 
 router.get('/COMP4537/assignment/admin.html/questions', (req, res, next) => {
     fs.readFile('../frontend/views/admin.html', (err, content) => {
-        if (err) {
-            console.log(`File Not Found ${file}`);
-            res.writeHead(404);
-            res.end();
-        } else {
+        if(err) {
+            res.writeHead(400, {
+                "Content-Type": "text/html",
+                "Access-Control-Allow-Origin": "*",
+          });
+            res.end(`The error is ${err}`)
+          } else {
             console.log(path);
             res.writeHead(200, {
-                "Content-type": "text/html"
+                "Content-type": "text/html",
+                "Access-Control-Allow-Origin": "*",
             });
             res.end(content);
         }
@@ -68,14 +77,17 @@ router.put('/questions', (req, res, next) => {
 
 router.get('/COMP4537/assignment/student.html', (req, res, next) => {
     fs.readFile('../frontend/views/student.html', (err, content) => {
-        if (err) {
-            console.log(`${err}`);
-            res.writeHead(404);
-            res.end(err);
-        } else {
+        if(err) {
+            res.writeHead(400, {
+                "Content-Type": "text/html",
+                "Access-Control-Allow-Origin": "*",
+          });
+            res.end(`The error is ${err}`)
+          } else {
             console.log(path);
             res.writeHead(200, {
-                "Content-type": "text/html"
+                "Content-type": "text/html",
+                "Access-Control-Allow-Origin": "*",
             });
             res.end(content);
         }
@@ -84,11 +96,13 @@ router.get('/COMP4537/assignment/student.html', (req, res, next) => {
 
 router.get('/COMP4537/Assignment/index.html', (req, res, next) => {
     fs.readFile('../frontend/views/index.html', (err, content) => {
-        if (err) {
-            console.log(`${err}`);
-            res.writeHead(404);
-            res.end(err);
-        } else {
+        if(err) {
+            res.writeHead(400, {
+                "Content-Type": "text/html",
+                "Access-Control-Allow-Origin": "*",
+          });
+            res.end(`The error is ${err}`)
+          } else {
             console.log(path);
             res.writeHead(200, {
                 "Content-type": "text/html"

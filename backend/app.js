@@ -5,10 +5,8 @@ const mainRoutes = require('./routes/routes');
 app.use(express.urlencoded({extended: true})); 
 app.use(express.json()); 
 app.set('/', path.join(__dirname, '../frontend/views'));
-app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use('/', mainRoutes);
-app.use('/images', express.static('../frontend/images'));
 app.use('/css', express.static('../frontend/css'));
 app.use('/js', express.static('../frontend/js'));
 

@@ -17,16 +17,16 @@ function getQuestions(req, res) {
                 "Access-Control-Allow-Origin": "*",
           });
             res.end(`The error is ${err}`)
-        }
+          }
         let query = "SELECT TITLE, DESCRIPTION, ANSWER, IS_ANSWER, ANSWER_INDEX, QQ.QUIZ_ID, QQ.QUESTION_ID, A.ANSWER_ID FROM QUIZ_QUESTION QQ JOIN QUIZ Q ON (Q.QUIZ_ID = QQ.QUIZ_ID) JOIN QUESTION QZ ON (QZ.QUESTION_ID = QQ.QUESTION_ID) JOIN ANSWER A ON (A.QUESTION_ID = QQ.QUESTION_ID)";
         connection.query(query,(err, results) => {
-                if(err){
-                    res.writeHead(400, {
-                        "Content-Type": "text/html",
-                        "Access-Control-Allow-Origin": "*",
-                  });
-                  res.end(`Query Failed`);
-                }
+            if(err) {
+                res.writeHead(400, {
+                    "Content-Type": "text/html",
+                    "Access-Control-Allow-Origin": "*",
+              });
+                res.end(`The error is ${err}`)
+              }
                 let rows = results;
                 res.end(JSON.stringify(rows));
                 connection.release();
@@ -69,7 +69,7 @@ function initCreateQuestion(req, res) {
                 "Access-Control-Allow-Origin": "*",
           });
             res.end(`The error is ${err}`)
-        }
+          }
         let queryData = req.body;
         createQuestion(connection, queryData, res);
     })
@@ -79,13 +79,13 @@ function createQuestion(connection, queryData, res) {
     let questionID;
     let createQuestion = `INSERT INTO QUESTION(QUESTION_ID, DESCRIPTION) VALUES (${0}, '${queryData['currentQuestion']}')`;
     connection.query(createQuestion,(err, results) => {
-            if(err){
-                res.writeHead(400, {
-                    "Content-Type": "text/html",
-                    "Access-Control-Allow-Origin": "*",
-              });
-              res.end(`Query Failed`);
-            }
+        if(err) {
+            res.writeHead(400, {
+                "Content-Type": "text/html",
+                "Access-Control-Allow-Origin": "*",
+          });
+            res.end(`The error is ${err}`)
+          }
             questionID = results.insertId;
             let answerArr = allAnswers(queryData, questionID);
             createAnswer(connection, queryData, questionID, res, answerArr);
@@ -95,13 +95,13 @@ function createQuestion(connection, queryData, res) {
 function createAnswer(connection, queryData, questionID, res, answerArr) {
     let insertArr = `INSERT INTO ANSWER (ANSWER_ID, QUESTION_ID, ANSWER, IS_ANSWER, ANSWER_INDEX) VALUES ?`;
     connection.query(insertArr, [answerArr], (err, results) => {
-        if(err){
+        if(err) {
             res.writeHead(400, {
                 "Content-Type": "text/html",
                 "Access-Control-Allow-Origin": "*",
           });
-          res.end(`Query Failed`);
-        }
+            res.end(`The error is ${err}`)
+          }
        let quiz = 'SELECT * FROM QUIZ'
        connection.query(quiz, (err, results) => {
         if(err){
@@ -142,7 +142,11 @@ function insertIntoQUIZ_QUESTION(connection, queryData, questionID, res) {
           });
           res.end(`Query Failed`);
         }
-        console.log(results); 
+        console.log(results);
+        res.writeHead(200, {
+            "Content-Type": "text/html",
+            "Access-Control-Allow-Origin": "*",
+      }); 
         res.end("Success");
     })
 }

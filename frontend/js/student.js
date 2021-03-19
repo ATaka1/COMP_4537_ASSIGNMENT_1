@@ -1,57 +1,3 @@
-class Question {
-    constructor(currentQuestion, a1, a2, a3, a4, ans, ansIndex) {
-        this.currentQuestion = currentQuestion;
-        this.a1 = a1;
-        this.a2 = a2;
-        this.a3 = a3;
-        this.a4 = a4;
-        this.ans = ans;
-        this.ansIndex = ansIndex;
-        this.quiz_id;
-        this.questionID;
-    }
-    storeQuestion() {
-        const XHR = new XMLHttpRequest();
-        this.quiz_id = sessionStorage.getItem('quiz_ID');
-        let host = `http://localhost:8888/questions`;
-        //let string = `https://andrewtakahashi.ca/COMP4537/labs/5/writeDB/?name="${name}"&score=${new_score}`;
-        XHR.open("POST", host, true);
-        XHR.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        XHR.send(JSON.stringify(this));
-        XHR.onreadystatechange = function() {
-            if(this.readyState == 4 && this.status == 200) {
-                let questions = JSON.parse(this.responseText);
-                console.log(questions);
-                alert("Question Created Successfully")
-              //document.getElementById("quesContainer").innerHTML = this.responseText;
-            } else if (this.readyState == 4 && this.status == 400) {
-              document.getElementById("quesContainer").innerHTML = this.responseText;
-            }
-        }
-    }
-
-    updateQuestion() {
-        const XHR = new XMLHttpRequest();
-        this.quiz_id = sessionStorage.getItem('quiz_ID');
-        let host = `http://localhost:8888/questions`;
-        //let string = `https://andrewtakahashi.ca/COMP4537/labs/5/writeDB/?name="${name}"&score=${new_score}`;
-        XHR.open("PUT", host, true);
-        XHR.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        XHR.send(JSON.stringify(this));
-        XHR.onreadystatechange = function() {
-            if(this.readyState == 4 && this.status == 200) {
-                alert(this.responseText);
-            } else if (this.readyState == 4 && this.status == 400) {
-                alert(this.responseText);
-            }
-        }
-    }
-
-    setQuizID(targetID) {
-        this.questionID = targetID;
-    }
-}
-
 window.addEventListener("load", function () {
     const XHR = new XMLHttpRequest();
     let host = `http://localhost:8888/questions`;
@@ -75,47 +21,6 @@ window.addEventListener("load", function () {
         }
     }
   } );
-
-  function addQuestion() {
-    let currentQuestion = document.getElementById("editableProblem").value;
-    let a1 = document.getElementById("r5").value
-    let a2 = document.getElementById("r6").value;
-    let a3 = document.getElementById("r7");
-    let a4 = document.getElementById("r8");
-    if(a3 === null) {
-        processQuestion(currentQuestion, a1, a2, null, null);
-    } else if (a4 === null) {
-        processQuestion(currentQuestion, a1, a2, a3.value, null);
-    } else {
-        processQuestion(currentQuestion, a1, a2, a3.value, a4.value);
-    }
-}
-
-function processQuestion(currentQuestion, a1, a2, a3, a4) {
-    if (document.getElementById("r1").checked === true) {
-        let ans = a1;
-        let ansIndex = 0;
-        let question = new Question(currentQuestion, a1, a2, a3, a4, ans, ansIndex);
-        question.storeQuestion();
-    } else if (document.getElementById("r2").checked === true) {
-        let ans = a2;
-        let ansIndex = 1;
-        let question = new Question(currentQuestion, a1, a2, a3, a4, ans, ansIndex);
-        question.storeQuestion();
-    } else if (document.getElementById("r3").checked === true) {
-        let ans = a3;
-        let ansIndex = 2;
-        let question = new Question(currentQuestion, a1, a2, a3, a4, ans, ansIndex);
-        question.storeQuestion();
-    } else if (document.getElementById("r4").checked === true) {
-        let ans = a4;
-        let ansIndex = 3;
-        let question = new Question(currentQuestion, a1, a2, a3, a4, ans, ansIndex);
-        question.storeQuestion();
-    } else {
-        alert("Please check box before submitting");
-    }
-}
 
 function addField() {
     let form = document.getElementById("form-edit-question");
@@ -171,7 +76,6 @@ function createInputGroup() {
   function createInput(questionWrapper, form, input1, input2, ANSWER, IS_ANSWER, ANSWER_ID, questionNumber) {
     let groups = createInputGroup();
     let question = "question" + questionNumber;
-    let btn = questionWrapper.querySelector('.btn');
     input1.checked = IS_ANSWER;
     input1.type = "radio"
     input1.name = question;
@@ -252,17 +156,6 @@ function getAnswerIndex(inputList) {
     return answerDic;
 }
 
-function createBtn() {
-    let saveBtn = document.createElement("input");
-    saveBtn.value = "Save";
-    saveBtn.classList.add("btn", "btn-outline-primary", "saveBtn", "btn-lg");
-    saveBtn.type = "button"
-    saveBtn.onclick = processInputs;
-    return saveBtn;
-}
-
-
-
 function createTextArea(questionWrapper, form, questionTitle, questionID) {
     let formDiv = document.createElement("div");
     let textarea = document.createElement("textarea");
@@ -301,10 +194,6 @@ function getQuestions(questions) {
             PREV_ID = questions[i].QUESTION_ID;
         }
     }
-}
-
-function processSubmit() {
-
 }
 
 function submit() {
