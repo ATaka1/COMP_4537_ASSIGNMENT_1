@@ -25,7 +25,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/COMP4537/assignment/admin.html', (req, res, next) => {
-    fs.readFile('../frontend/views/admin.html', (err, content) => {
+    fs.readFile('../frontend/views//admin.html', (err, content) => {
         if(err) {
           res.writeHead(400, {
               "Content-Type": "text/html",
@@ -73,6 +73,10 @@ router.post('/questions', (req, res, next) => {
 router.put('/questions', (req, res, next) => {
     updateHelper.initUpdateQuestion(req, res);
 })
+
+router.delete('/questions', (req, res, next) => {
+    createHelper.deleteQuestion(req, res);
+});
 
 
 router.get('/COMP4537/assignment/student.html', (req, res, next) => {

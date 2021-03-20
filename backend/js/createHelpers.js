@@ -38,7 +38,6 @@ function allAnswers(queryData, questionID) {
     let answerArray = [];
     for(const [key, value] of Object.entries(queryData)){
         if(value === null) continue;
-        console.log(typeof key);
         switch(key) {
             case 'a1':
                 (queryData.ansIndex === (0)) ? answerArray.push([0, questionID, value, true, queryData['ansIndex']]) : answerArray.push([0, questionID, value, false, queryData['ansIndex']])
@@ -111,12 +110,13 @@ function createAnswer(connection, queryData, questionID, res, answerArr) {
           });
           res.end(`Query Failed`);
         }
-        (results.length === 0) ? createQUIZ(connection, queryData, questionID, res) : insertIntoQUIZ_QUESTION(connection, queryData, questionID, res);
+        let quiz_id = queryData['quiz_id'];
+        (results.length === 0) ? createQUIZ(connection, quiz_id, questionID, res) : insertIntoQUIZ_QUESTION(connection, quiz_id, questionID, res);
        })
     })
 }
 
-function createQUIZ(connection, queryData, questionID, res) {
+function createQUIZ(connection, quiz_id, questionID, res) {
     let createQUIZ = "INSERT INTO QUIZ(QUIZ_ID, TITLE) VALUES(0, 'DEFAULT')";
     connection.query(createQUIZ, (err, results) => {
         if(err){
@@ -126,14 +126,15 @@ function createQUIZ(connection, queryData, questionID, res) {
           });
           res.end(`Query Failed`);
         }
-        insertIntoQUIZ_QUESTION(connection, queryData, questionID, res);
+        let newQuizID = results.insertId;
+        insertIntoQUIZ_QUESTION(connection, newQuizID, questionID, res);
     })
 }
 
 
 
-function insertIntoQUIZ_QUESTION(connection, queryData, questionID, res) {
-    let quiz_question = `INSERT INTO QUIZ_QUESTION(QUIZ_ID, QUESTION_ID) VALUES (${queryData['quiz_id']}, ${questionID})`;
+function insertIntoQUIZ_QUESTION(connection, quiz_id, questionID, res) {
+    let quiz_question = `INSERT INTO QUIZ_QUESTION(QUIZ_ID, QUESTION_ID) VALUES (${quiz_id}, ${questionID})`;
     connection.query(quiz_question, (err, results) => {
         if(err){
             res.writeHead(400, {
@@ -142,13 +143,57 @@ function insertIntoQUIZ_QUESTION(connection, queryData, questionID, res) {
           });
           res.end(`Query Failed`);
         }
-        console.log(results);
-        res.writeHead(200, {
-            "Content-Type": "text/html",
-            "Access-Control-Allow-Origin": "*",
-      }); 
         res.end("Success");
     })
 }
 
-module.exports = {initCreateQuestion, getQuestions};
+function deleteQuestion(req, res) {
+    db.getConnection((err, connection) => {
+        let quiz_id = req.body.quiz_id;
+        let question_id = req.body.questionID;
+        let delete_quiz_question = `DELETE FROM QUIZ_QUESTION WHERE QUIZ_ID = ${quiz_id} AND QUESTION_ID = ${question_id}`;
+        connection.query(delete_quiz_question, (err, results) => {
+            if(err){
+                res.writeHead(400, {
+                    "Content-Type": "text/html",
+                    "Access-Control-Allow-Origin": "*",
+              });
+              res.end(`Query Failed`);
+            }
+            console.log(results);
+            deleteAnswers(connection, quiz_id, question_id, res);
+        })
+    })
+}
+
+function deleteCurrentQuestion(connection, question_id, res) {
+    let delete_question = `DELETE FROM QUESTION WHERE QUESTION_ID = ${question_id}`;
+    connection.query(delete_question, (err, results) => {
+        if(err){
+            res.writeHead(400, {
+                "Content-Type": "text/html",
+                "Access-Control-Allow-Origin": "*",
+          });
+          res.end(`Query Failed`);
+        }
+        console.log(results);
+        res.end(`Success Question ${question_id} was deleted`);
+    })
+}
+
+function deleteAnswers(connection, quiz_id, question_id, res) {
+    let deleteAnswers = `DELETE FROM ANSWER WHERE QUESTION_ID = ${question_id}`;
+    connection.query(deleteAnswers, (err, results) => {
+        if(err){
+            res.writeHead(400, {
+                "Content-Type": "text/html",
+                "Access-Control-Allow-Origin": "*",
+          });
+          res.end(`Query Failed`);
+        }
+        deleteCurrentQuestion(connection, question_id, res);
+    })
+}
+
+
+module.exports = {initCreateQuestion, getQuestions, deleteQuestion};

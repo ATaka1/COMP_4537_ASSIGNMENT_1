@@ -47,6 +47,24 @@ class Question {
         }
     }
 
+    deleteQuestion(question_id) {
+        const XHR = new XMLHttpRequest();
+        this.quiz_id = sessionStorage.getItem('quiz_ID');
+        this.questionID = question_id;
+        let host = `http://localhost:8888/questions`;
+        //let string = `https://andrewtakahashi.ca/COMP4537/labs/5/writeDB/?name="${name}"&score=${new_score}`;
+        XHR.open("DELETE", host, true);
+        XHR.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        XHR.send(JSON.stringify(this));
+        XHR.onreadystatechange = function() {
+            if(this.readyState == 4 && this.status == 200) {
+                alert(this.responseText);
+            } else if (this.readyState == 4 && this.status == 400) {
+                alert(this.responseText);
+            }
+        }
+    }
+
     setQuizID(targetID) {
         this.questionID = targetID;
     }
@@ -114,6 +132,19 @@ function processQuestion(currentQuestion, a1, a2, a3, a4) {
         question.storeQuestion();
     } else {
         alert("Please check box before submitting");
+    }
+}
+
+function deleteQuestion() {
+    let parentdiv = document.querySelector('#quesContainer').children;
+    if(parentdiv.length === 0) {
+        alert("Cannot Delete no question found");
+    } else {
+        let childList = Array.from(parentdiv);
+        let child = childList[childList.length - 1];
+        let question_id = child.getAttribute('id');
+        let deletedQuestion = new Question();
+        deletedQuestion.deleteQuestion(parseInt(question_id));
     }
 }
 

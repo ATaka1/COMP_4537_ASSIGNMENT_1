@@ -70,8 +70,9 @@ function createInputGroup() {
     groupArray.push(inputGroupPrepend);
     groupArray.push(inputGroupText);
     return groupArray;
-    
 }
+
+
 
   function createInput(questionWrapper, form, input1, input2, ANSWER, IS_ANSWER, ANSWER_ID, questionNumber) {
     let groups = createInputGroup();
@@ -171,6 +172,7 @@ function createTextArea(questionWrapper, form, questionTitle, questionID) {
     questionWrapper.appendChild(formDiv);
     form.appendChild(questionWrapper);
 }
+
 
 
 function getQuestions(questions) {
