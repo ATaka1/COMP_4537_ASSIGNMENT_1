@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 19, 2021 at 03:39 PM
+-- Generation Time: Mar 20, 2021 at 10:56 PM
 -- Server version: 10.3.28-MariaDB-log
 -- PHP Version: 7.3.6
 
@@ -31,20 +31,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `ANSWER` (
   `ANSWER_ID` int(11) NOT NULL,
   `QUESTION_ID` int(11) NOT NULL,
-  `ANSWER` varchar(100) NOT NULL,
+  `ANSWER` varchar(150) NOT NULL,
   `IS_ANSWER` tinyint(1) DEFAULT NULL,
   `ANSWER_INDEX` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `ANSWER`
---
-
-INSERT INTO `ANSWER` (`ANSWER_ID`, `QUESTION_ID`, `ANSWER`, `IS_ANSWER`, `ANSWER_INDEX`) VALUES
-(1, 1, 'IT GRABS ALL THE RECORDS FROM THE DB', 0, 1),
-(2, 1, 'IT DOES NOT GRAB ALL THE VALUES FROM THE DB', 1, 1),
-(3, 2, 'IT IS A QUERY WITHIN A QUERY', 1, 0),
-(4, 2, 'IT IS A QUERY THAT CHECKS FOR REFERENTIAL INTEGRETY', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -54,16 +44,8 @@ INSERT INTO `ANSWER` (`ANSWER_ID`, `QUESTION_ID`, `ANSWER`, `IS_ANSWER`, `ANSWER
 
 CREATE TABLE `QUESTION` (
   `QUESTION_ID` int(11) NOT NULL,
-  `DESCRIPTION` varchar(100) NOT NULL
+  `DESCRIPTION` varchar(500) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `QUESTION`
---
-
-INSERT INTO `QUESTION` (`QUESTION_ID`, `DESCRIPTION`) VALUES
-(1, 'WHAT DOES SELECT * FROM DB DO?'),
-(2, 'WHAT IS A SUBQUERY?');
 
 -- --------------------------------------------------------
 
@@ -73,15 +55,8 @@ INSERT INTO `QUESTION` (`QUESTION_ID`, `DESCRIPTION`) VALUES
 
 CREATE TABLE `QUIZ` (
   `QUIZ_ID` int(11) NOT NULL,
-  `TITLE` varchar(50) NOT NULL
+  `TITLE` varchar(100) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `QUIZ`
---
-
-INSERT INTO `QUIZ` (`QUIZ_ID`, `TITLE`) VALUES
-(1, 'A QUIZ ABOUT SQL');
 
 -- --------------------------------------------------------
 
@@ -93,14 +68,6 @@ CREATE TABLE `QUIZ_QUESTION` (
   `QUIZ_ID` int(11) NOT NULL,
   `QUESTION_ID` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `QUIZ_QUESTION`
---
-
-INSERT INTO `QUIZ_QUESTION` (`QUIZ_ID`, `QUESTION_ID`) VALUES
-(1, 1),
-(1, 2);
 
 --
 -- Indexes for dumped tables
@@ -140,19 +107,19 @@ ALTER TABLE `QUIZ_QUESTION`
 -- AUTO_INCREMENT for table `ANSWER`
 --
 ALTER TABLE `ANSWER`
-  MODIFY `ANSWER_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ANSWER_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `QUESTION`
 --
 ALTER TABLE `QUESTION`
-  MODIFY `QUESTION_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `QUESTION_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `QUIZ`
 --
 ALTER TABLE `QUIZ`
-  MODIFY `QUIZ_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `QUIZ_ID` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

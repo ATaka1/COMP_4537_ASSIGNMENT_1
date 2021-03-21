@@ -15,7 +15,8 @@ function getQuestions(req, res) {
             res.writeHead(400, {
                 "Content-Type": "text/html",
                 "Access-Control-Allow-Origin": "*",
-          });
+            });
+            connection.release();
             res.end(`The error is ${err}`)
           }
         let query = "SELECT TITLE, DESCRIPTION, ANSWER, IS_ANSWER, ANSWER_INDEX, QQ.QUIZ_ID, QQ.QUESTION_ID, A.ANSWER_ID FROM QUIZ_QUESTION QQ JOIN QUIZ Q ON (Q.QUIZ_ID = QQ.QUIZ_ID) JOIN QUESTION QZ ON (QZ.QUESTION_ID = QQ.QUESTION_ID) JOIN ANSWER A ON (A.QUESTION_ID = QQ.QUESTION_ID)";
@@ -24,10 +25,15 @@ function getQuestions(req, res) {
                 res.writeHead(400, {
                     "Content-Type": "text/html",
                     "Access-Control-Allow-Origin": "*",
-              });
+                });
+                connection.release();
                 res.end(`The error is ${err}`)
               }
                 let rows = results;
+                res.writeHead(200, {
+                    "Content-Type": "text/html",
+                    "Access-Control-Allow-Origin": "*",
+                });
                 res.end(JSON.stringify(rows));
                 connection.release();
             })
@@ -66,7 +72,8 @@ function initCreateQuestion(req, res) {
             res.writeHead(400, {
                 "Content-Type": "text/html",
                 "Access-Control-Allow-Origin": "*",
-          });
+            });
+            connection.release();
             res.end(`The error is ${err}`)
           }
         let queryData = req.body;
@@ -82,7 +89,8 @@ function createQuestion(connection, queryData, res) {
             res.writeHead(400, {
                 "Content-Type": "text/html",
                 "Access-Control-Allow-Origin": "*",
-          });
+            });
+            connection.release();
             res.end(`The error is ${err}`)
           }
             questionID = results.insertId;
@@ -98,7 +106,8 @@ function createAnswer(connection, queryData, questionID, res, answerArr) {
             res.writeHead(400, {
                 "Content-Type": "text/html",
                 "Access-Control-Allow-Origin": "*",
-          });
+            });
+            connection.release();
             res.end(`The error is ${err}`)
           }
        let quiz = 'SELECT * FROM QUIZ'
@@ -107,7 +116,8 @@ function createAnswer(connection, queryData, questionID, res, answerArr) {
             res.writeHead(400, {
                 "Content-Type": "text/html",
                 "Access-Control-Allow-Origin": "*",
-          });
+            });
+          connection.release();
           res.end(`Query Failed`);
         }
         let quiz_id = queryData['quiz_id'];
@@ -123,7 +133,8 @@ function createQUIZ(connection, quiz_id, questionID, res) {
             res.writeHead(400, {
                 "Content-Type": "text/html",
                 "Access-Control-Allow-Origin": "*",
-          });
+            });
+          connection.release();
           res.end(`Query Failed`);
         }
         let newQuizID = results.insertId;
@@ -140,9 +151,14 @@ function insertIntoQUIZ_QUESTION(connection, quiz_id, questionID, res) {
             res.writeHead(400, {
                 "Content-Type": "text/html",
                 "Access-Control-Allow-Origin": "*",
-          });
+            });
           res.end(`Query Failed`);
         }
+        connection.release();
+        res.writeHead(200, {
+            "Content-Type": "text/html",
+            "Access-Control-Allow-Origin": "*",
+        });
         res.end("Success");
     })
 }
@@ -157,27 +173,12 @@ function deleteQuestion(req, res) {
                 res.writeHead(400, {
                     "Content-Type": "text/html",
                     "Access-Control-Allow-Origin": "*",
-              });
+                });
               res.end(`Query Failed`);
             }
             console.log(results);
             deleteAnswers(connection, quiz_id, question_id, res);
         })
-    })
-}
-
-function deleteCurrentQuestion(connection, question_id, res) {
-    let delete_question = `DELETE FROM QUESTION WHERE QUESTION_ID = ${question_id}`;
-    connection.query(delete_question, (err, results) => {
-        if(err){
-            res.writeHead(400, {
-                "Content-Type": "text/html",
-                "Access-Control-Allow-Origin": "*",
-          });
-          res.end(`Query Failed`);
-        }
-        console.log(results);
-        res.end(`Success Question ${question_id} was deleted`);
     })
 }
 
@@ -188,12 +189,34 @@ function deleteAnswers(connection, quiz_id, question_id, res) {
             res.writeHead(400, {
                 "Content-Type": "text/html",
                 "Access-Control-Allow-Origin": "*",
-          });
+            });
           res.end(`Query Failed`);
         }
         deleteCurrentQuestion(connection, question_id, res);
     })
 }
+
+function deleteCurrentQuestion(connection, question_id, res) {
+    let delete_question = `DELETE FROM QUESTION WHERE QUESTION_ID = ${question_id}`;
+    connection.query(delete_question, (err, results) => {
+        if(err){
+            res.writeHead(400, {
+                "Content-Type": "text/html",
+                "Access-Control-Allow-Origin": "*",
+            });
+          res.end(`Query Failed`);
+        }
+        console.log(results);
+        connection.release();
+        res.writeHead(200, {
+            "Content-Type": "text/html",
+            "Access-Control-Allow-Origin": "*",
+        });
+        res.end(`Success Question ${question_id} was deleted`);
+    })
+}
+
+
 
 
 module.exports = {initCreateQuestion, getQuestions, deleteQuestion};

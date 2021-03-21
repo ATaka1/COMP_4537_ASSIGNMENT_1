@@ -15,8 +15,9 @@ function initUpdateQuestion(req, res) {
             res.writeHead(400, {
                 "Content-Type": "text/html",
                 "Access-Control-Allow-Origin": "*",
-          });
-            res.end(`The error is ${err}`)
+            });
+            connection.release();
+            res.end(`The error is ${err}`);
         }
         updateQuestion(connection, req, res);
     })
@@ -30,7 +31,8 @@ function updateQuestion(connection, req, res) {
             res.writeHead(400, {
                 "Content-Type": "text/html",
                 "Access-Control-Allow-Origin": "*",
-          });
+            });
+          connection.release();
           res.end(`Query Failed`);
         }
         getCurrentAnswers(connection, queryData, res);
@@ -44,7 +46,8 @@ function getCurrentAnswers(connection, queryData, res) {
             res.writeHead(400, {
                 "Content-Type": "text/html",
                 "Access-Control-Allow-Origin": "*",
-          });
+            });
+          connection.release();
           res.end(`Query Failed`);
         }
         let formattedAnswers = formatAllAnswers(queryData, queryData['questionID'], results);
@@ -65,13 +68,15 @@ function updateAllAnswers(connection, res, formattedAnswers) {
             res.writeHead(400, {
                 "Content-Type": "text/html",
                 "Access-Control-Allow-Origin": "*",
-          });
+            });
+          connection.release();
           res.end(`Query Failed`);
         }
         res.writeHead(200, {
             "Content-Type": "text/html",
             "Access-Control-Allow-Origin": "*",
-      });
+        });
+        connection.release();
         res.end("success");
     });
 }
